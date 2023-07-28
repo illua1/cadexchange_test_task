@@ -1,7 +1,11 @@
 
+#include <boost/qvm/vec.hpp>
+
 #include <limits>
 
 #include "derivative.hh"
+
+using abc = boost::qvm::vec<float, 3>;
 
 template<typename Value>
 class BaseDerivative : public AbstractMathObjectBase<Value> {
