@@ -11,8 +11,8 @@ find_package(Boost)
 include_directories(${Boost_INCLUDE_DIRS})
 
 # Internal libs
-add_library(Derivative STATIC src/derivative.cpp)
-target_link_libraries(Derivative ${Boost_LIBRARIES})
+add_library(Math STATIC src/math_object.cpp)
+target_link_libraries(Math ${Boost_LIBRARIES})
 
 add_executable(Main src/main.cpp)
-target_link_libraries(Main Derivative)
+target_link_libraries(Main Math)

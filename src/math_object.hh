@@ -1,10 +1,10 @@
 
+#pragma once
+
 #include <memory>
 #include <iostream>
 
-#include <boost/qvm/mat.hpp>
-#include <boost/qvm/vec.hpp>
-#include <boost/qvm/vec_operations.hpp>
+#include "math.hh"
 
 template<typename Value>
 class AbstractMathObjectBase {
@@ -22,9 +22,6 @@ class AbstractMathObjectBase {
   public: std::shared_ptr<AbstractMathObjectBase> copy() const;
   public: virtual std::shared_ptr<AbstractMathObjectBase> copy_imp() const = 0;
 };
-
-using Float3 = boost::qvm::vec<float, 3>;
-using Float3x3 = boost::qvm::mat<float, 3, 3>;
 
 using Abstract3dMathObject = std::shared_ptr<AbstractMathObjectBase<Float3>>;
 

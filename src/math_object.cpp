@@ -1,9 +1,6 @@
 
-#include <boost/qvm/mat.hpp>
-#include <boost/qvm/vec_mat_operations.hpp>
-#include <boost/qvm/mat_operations.hpp>
-
-#include "derivative.hh"
+#include "math.hh"
+#include "math_object.hh"
 
 Float3 CircleMathObject::compute_imp(const float factor) const
 {

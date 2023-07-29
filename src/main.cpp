@@ -2,15 +2,8 @@
 #include <iostream>
 #include <vector>
 
-#include <boost/qvm/vec_access.hpp>
-
-#include "derivative.hh"
-
-std::ostream& operator << (std::ostream& os, const Float3 &point)
-{
-    os << "(" << X(point) << ", " << Y(point) << ", " << Z(point) << ")";  
-    return os;
-}
+#include "math.hh"
+#include "math_object.hh"
 
 void main(const char **args, const int count)
 {
