@@ -15,3 +15,4 @@ add_library(Derivative STATIC src/derivative.cpp)
 target_link_libraries(Derivative ${Boost_LIBRARIES})
 
 add_executable(Main src/main.cpp)
+target_link_libraries(Main Derivative)
