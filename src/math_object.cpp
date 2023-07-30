@@ -5,7 +5,7 @@
 Float3 CircleMathObject::compute_imp(const float factor) const
 {
   const Float3 start_point{0.0f, radius, 0.0f};
-  const Float3x3 rot = math::rot_mat_xyz<3, float>(0.0f, 0.0f, factor * 3.14);
+  const Float3x3 rot = math::rot_mat_xyz<3, float>(0.0f, 0.0f, factor * pi * 2.0f);
   return rot * start_point;
 }
 
@@ -24,7 +24,7 @@ MathObject3dPtr CircleMathObject::copy_imp() const
 Float3 CircleDerivativeMathObject::compute_imp(const float factor) const
 {
   const Float3 start_point{0.0f, 1.0f, 0.0f};
-  const Float3x3 rot = math::rot_mat_xyz<3, float>(0.0f, 0.0f, factor * 3.14 + 3.14 / 2);
+  const Float3x3 rot = math::rot_mat_xyz<3, float>(0.0f, 0.0f, (factor + 0.25f) * pi * 2.0f);
   return rot * start_point;
 }
 

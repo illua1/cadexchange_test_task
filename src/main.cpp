@@ -12,7 +12,7 @@ void main(const char **args, const int count)
 
   for (const auto obj : list) {
     const auto derivative = obj->derivative();
-    for (float step = 0.0f; step < 2.0f; step += 0.25f) {
+    for (float step = 0.0f; step < 1.0f; step += 0.125f) {
       std::cout << obj->compute(step);
       std::cout << ": " << derivative->compute(step) << std::endl;
     }

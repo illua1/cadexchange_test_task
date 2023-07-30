@@ -3,6 +3,11 @@
 
 #include <iostream>
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+static constexpr float pi = M_PI;
+#undef _USE_MATH_DEFINES
+
 #include <boost/qvm/mat.hpp>
 #include <boost/qvm/mat_operations.hpp>
 #include <boost/qvm/vec.hpp>

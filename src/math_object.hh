@@ -14,13 +14,13 @@ class AbstractMathObjectBase {
   public: virtual ~AbstractMathObjectBase() = 0;
 
   public: Value compute(const float factor) const;
-  public: virtual Value compute_imp(const float factor) const = 0;
+  protected: virtual Value compute_imp(const float factor) const = 0;
 
   public: std::shared_ptr<AbstractMathObjectBase> derivative() const;
-  public: virtual std::shared_ptr<AbstractMathObjectBase> derivative_imp() const;
+  protected: virtual std::shared_ptr<AbstractMathObjectBase> derivative_imp() const;
 
   public: std::shared_ptr<AbstractMathObjectBase> copy() const;
-  public: virtual std::shared_ptr<AbstractMathObjectBase> copy_imp() const = 0;
+  protected: virtual std::shared_ptr<AbstractMathObjectBase> copy_imp() const = 0;
 };
 
 /* 3D calculation & derivativition only supported yet. */
