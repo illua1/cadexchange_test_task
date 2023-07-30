@@ -23,54 +23,136 @@ class AbstractMathObjectBase {
   public: virtual std::shared_ptr<AbstractMathObjectBase> copy_imp() const = 0;
 };
 
-using Abstract3dMathObject = std::shared_ptr<AbstractMathObjectBase<Float3>>;
+/* 3D calculation & derivativition only supported yet. */
 
-template<typename Value>
-class BaseDerivative : public AbstractMathObjectBase<Value> {
-  using BaseType = std::shared_ptr<AbstractMathObjectBase<Value>>;
-  const BaseType base;
-  public: BaseDerivative(const BaseType obj_base) : AbstractMathObjectBase<Value>("Base Derivative"), base(obj_base) {}
+using AbstractMathObject3d = AbstractMathObjectBase<Float3>;
 
-  public: static std::shared_ptr<AbstractMathObjectBase<Value>> make(const BaseType obj_base)
+using MathObject3dPtr = std::shared_ptr<AbstractMathObject3d>;
+
+class BaseDerivative : public AbstractMathObject3d {
+  private: const MathObject3dPtr base;
+
+  public: BaseDerivative(const MathObject3dPtr obj_base) : AbstractMathObject3d("Base Derivative"), base(obj_base) {}
+
+  public: static MathObject3dPtr make(const MathObject3dPtr obj_base)
   {
-    return std::make_shared<BaseDerivative<Value>>(obj_base);
+    return std::make_shared<BaseDerivative>(obj_base);
   }
 
-  Value compute_imp(const float factor) const
+  public: Float3 compute_imp(const float factor) const override final
   {
     const float zero_offset = 0.001f;
-    const Value a_value = base->compute(factor - zero_offset);
-    const Value b_value = base->compute(factor + zero_offset);
-    const Value tangent = normalized(a_value - b_value);
+    const Float3 a_value = base->compute(factor - zero_offset);
+    const Float3 b_value = base->compute(factor + zero_offset);
+    const Float3 tangent = normalized(a_value - b_value);
     return tangent;
   }
 
-  std::shared_ptr<AbstractMathObjectBase<Value>> derivative_imp() const
+  public: MathObject3dPtr derivative_imp() const override final
   {
     return std::make_shared<BaseDerivative>(*this);
   }
 
-  std::shared_ptr<AbstractMathObjectBase<Value>> copy_imp() const
+  public: MathObject3dPtr copy_imp() const override final
   {
     return std::make_shared<BaseDerivative>(base);
   }
 };
 
-class CircleMathObject : public AbstractMathObjectBase<Float3> {
-  private: const float radius;
+class CircleMathObject : public AbstractMathObject3d {
+  protected: const float radius;
 
-  public: CircleMathObject(const float circle_radius) : AbstractMathObjectBase<Float3>("Circle"), radius(circle_radius) {}
+  public: CircleMathObject(const float circle_radius) : AbstractMathObject3d("Circle"), radius(circle_radius) {}
   public: ~CircleMathObject() = default;
 
-  public: static Abstract3dMathObject make(const float circle_radius)
+  public: static MathObject3dPtr make(const float circle_radius)
   {
     return std::make_shared<CircleMathObject>(circle_radius);
   }
 
   private: Float3 compute_imp(const float factor) const override;
-  private: Abstract3dMathObject derivative_imp() const override;
-  private: Abstract3dMathObject copy_imp() const override;
+  private: MathObject3dPtr derivative_imp() const override;
+  private: MathObject3dPtr copy_imp() const override;
 };
+
+class CircleDerivativeMathObject : public CircleMathObject {
+  public: using CircleMathObject::CircleMathObject;
+  public: ~CircleDerivativeMathObject() = default;
+
+  public: static MathObject3dPtr make(const float circle_radius)
+  {
+    return std::make_shared<CircleDerivativeMathObject>(circle_radius);
+  }
+
+  private: Float3 compute_imp(const float factor) const override final;
+  private: MathObject3dPtr derivative_imp() const override final;
+  private: MathObject3dPtr copy_imp() const override final;
+};
+
+class ElipseMathObject : public AbstractMathObject3d {
+  protected: float x;
+  protected: float y;
+
+  public: ElipseMathObject(const float x_size, const float y_size) : AbstractMathObject3d("Elipse"), x(x_size), y(y_size) {}
+  public: ~ElipseMathObject() = default;
+
+  public: static MathObject3dPtr make(const float x_size, const float y_size)
+  {
+    return std::make_shared<ElipseMathObject>(x_size, y_size);
+  }
+
+  private: Float3 compute_imp(const float factor) const override;
+  private: MathObject3dPtr derivative_imp() const override;
+  private: MathObject3dPtr copy_imp() const override;
+};
+
+class ElipseDerivativeMathObject : public ElipseMathObject {
+  public: using ElipseMathObject::ElipseMathObject;
+  public: ~ElipseDerivativeMathObject() = default;
+
+  public: static MathObject3dPtr make(const float x_size, const float y_size)
+  {
+    return std::make_shared<ElipseDerivativeMathObject>(x_size, y_size);
+  }
+
+  private: Float3 compute_imp(const float factor) const override final;
+  private: MathObject3dPtr derivative_imp() const override final;
+  private: MathObject3dPtr copy_imp() const override final;
+};
+
+class HelixMathObject : public AbstractMathObject3d {
+  protected: const float radius;
+  protected: const float step_height;
+
+  public: HelixMathObject(const float helix_radius, const float helix_step_height) :
+    AbstractMathObject3d("Helix"), radius(helix_radius), step_height(helix_step_height) {}
+  public: ~HelixMathObject() = default;
+
+  public: static MathObject3dPtr make(const float helix_radius, const float helix_step_height)
+  {
+    return std::make_shared<HelixMathObject>(helix_radius, helix_step_height);
+  }
+
+  private: Float3 compute_imp(const float factor) const override;
+  private: MathObject3dPtr derivative_imp() const override;
+  private: MathObject3dPtr copy_imp() const override;
+};
+
+class HelixDerivativeMathObject : public HelixMathObject {
+  public: using HelixMathObject::HelixMathObject;
+  public: ~HelixDerivativeMathObject() = default;
+
+  public: static MathObject3dPtr make(const float helix_radius, const float helix_step_height)
+  {
+    return std::make_shared<HelixDerivativeMathObject>(helix_radius, helix_step_height);
+  }
+
+  private: Float3 compute_imp(const float factor) const override final;
+  private: MathObject3dPtr derivative_imp() const override final;
+  private: MathObject3dPtr copy_imp() const override final;
+};
+
+/* Implemenations of base template class. */
 
 template<typename Value>
 AbstractMathObjectBase<Value>::~AbstractMathObjectBase<Value>() = default;
@@ -84,7 +166,8 @@ Value AbstractMathObjectBase<Value>::compute(const float factor) const
 template<typename Value>
 std::shared_ptr<AbstractMathObjectBase<Value>> AbstractMathObjectBase<Value>::derivative_imp() const
 {
-  return BaseDerivative<Value>::make(this->copy());
+  static_assert(std::is_same_v<Value, Float3>);
+  return BaseDerivative::make(this->copy());
 }
 
 template<typename Value>

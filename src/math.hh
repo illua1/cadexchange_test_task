@@ -10,8 +10,10 @@
 #include <boost/qvm/vec_operations.hpp>
 #include <boost/qvm/vec_access.hpp>
 
-using Float3 = boost::qvm::vec<float, 3>;
-using Float3x3 = boost::qvm::mat<float, 3, 3>;
+namespace math = boost::qvm;
+
+using Float3 = math::vec<float, 3>;
+using Float3x3 = math::mat<float, 3, 3>;
 
 inline std::ostream &operator << (std::ostream &os, const Float3 &point)
 {
