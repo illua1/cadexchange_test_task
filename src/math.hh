@@ -5,7 +5,7 @@
 
 #define _USE_MATH_DEFINES
 #include <math.h>
-static constexpr float pi = M_PI;
+inline constexpr float pi = M_PI;
 #undef _USE_MATH_DEFINES
 
 #include <boost/qvm/mat.hpp>
@@ -24,4 +24,13 @@ inline std::ostream &operator << (std::ostream &os, const Float3 &point)
 {
     os << "(" << X(point) << ", " << Y(point) << ", " << Z(point) << ")";  
     return os;
+}
+
+inline Float3 operator *(const Float3 &a, const Float3 &b)
+{
+  Float3 result;
+  X(result) = X(a) * X(b);
+  Y(result) = Y(a) * Y(b);
+  Z(result) = Z(a) * Z(b);
+  return result;
 }

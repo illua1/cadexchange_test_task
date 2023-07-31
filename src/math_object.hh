@@ -13,6 +13,8 @@ class AbstractMathObjectBase {
   public: AbstractMathObjectBase(const char *obj_name) : name(obj_name) {}
   public: virtual ~AbstractMathObjectBase() = 0;
 
+  public: const char *get_name() const;
+
   public: Value compute(const float factor) const;
   protected: virtual Value compute_imp(const float factor) const = 0;
 
@@ -60,7 +62,7 @@ class BaseDerivative : public AbstractMathObject3d {
 };
 
 class CircleMathObject : public AbstractMathObject3d {
-  protected: const float radius;
+  public: const float radius;
 
   public: CircleMathObject(const float circle_radius) : AbstractMathObject3d("Circle"), radius(circle_radius) {}
   public: ~CircleMathObject() = default;
@@ -123,14 +125,15 @@ class ElipseDerivativeMathObject : public ElipseMathObject {
 class HelixMathObject : public AbstractMathObject3d {
   protected: const float radius;
   protected: const float step_height;
+  protected: const int steps_amount;
 
-  public: HelixMathObject(const float helix_radius, const float helix_step_height) :
-    AbstractMathObject3d("Helix"), radius(helix_radius), step_height(helix_step_height) {}
+  public: HelixMathObject(const float helix_radius, const float helix_step_height, const int helix_steps_amount) :
+    AbstractMathObject3d("Helix"), radius(helix_radius), step_height(helix_step_height), steps_amount(helix_steps_amount) {}
   public: ~HelixMathObject() = default;
 
-  public: static MathObject3dPtr make(const float helix_radius, const float helix_step_height)
+  public: static MathObject3dPtr make(const float helix_radius, const float helix_step_height, const int helix_steps_amount)
   {
-    return std::make_shared<HelixMathObject>(helix_radius, helix_step_height);
+    return std::make_shared<HelixMathObject>(helix_radius, helix_step_height, helix_steps_amount);
   }
 
   private: Float3 compute_imp(const float factor) const override;
@@ -142,9 +145,9 @@ class HelixDerivativeMathObject : public HelixMathObject {
   public: using HelixMathObject::HelixMathObject;
   public: ~HelixDerivativeMathObject() = default;
 
-  public: static MathObject3dPtr make(const float helix_radius, const float helix_step_height)
+  public: static MathObject3dPtr make(const float helix_radius, const float helix_step_height, const int helix_steps_amount)
   {
-    return std::make_shared<HelixDerivativeMathObject>(helix_radius, helix_step_height);
+    return std::make_shared<HelixDerivativeMathObject>(helix_radius, helix_step_height, helix_steps_amount);
   }
 
   private: Float3 compute_imp(const float factor) const override final;
@@ -153,6 +156,12 @@ class HelixDerivativeMathObject : public HelixMathObject {
 };
 
 /* Implemenations of base template class. */
+
+template<typename Value>
+const char *AbstractMathObjectBase<Value>::get_name() const
+{
+  return name;
+}
 
 template<typename Value>
 AbstractMathObjectBase<Value>::~AbstractMathObjectBase<Value>() = default;
