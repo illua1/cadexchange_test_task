@@ -15,6 +15,7 @@ class AbstractMathObjectBase {
 
   public: const char *get_name() const;
 
+  /* Factor in range [0, 1]. Mapped in [0, pi * 2] range for cyclic curve. */
   public: Value compute(const float factor) const;
   protected: virtual Value compute_imp(const float factor) const = 0;
 

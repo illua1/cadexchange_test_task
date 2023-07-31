@@ -85,7 +85,7 @@ static std::vector<MathObject3dPtr> random_curves(const int amount, std::initial
   for (int i = 0; i < amount; i++) {
     const int index = d_ct_d(gen);
     const CurveTypes &type = type_keys[index];
-    const auto generator = generators_map[type];
+    const auto &generator = generators_map[type];
     results[i] = generator(i);
   }
 
